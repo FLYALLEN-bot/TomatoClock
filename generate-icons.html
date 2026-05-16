@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head><title>Icon Generator</title></head>
+<body>
+<canvas id="c192" width="192" height="192"></canvas>
+<canvas id="c512" width="512" height="512"></canvas>
+<script>
+function drawIcon(canvas) {
+  const ctx = canvas.getContext('2d');
+  const size = canvas.width;
+  const center = size / 2;
+  const radius = size * 0.47;
+
+  // Background circle
+  const grad = ctx.createLinearGradient(0, 0, size, size);
+  grad.addColorStop(0, '#FF6B6B');
+  grad.addColorStop(1, '#FF8E8E');
+  ctx.beginPath();
+  ctx.arc(center, center, radius, 0, Math.PI * 2);
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Tomato emoji
+  ctx.font = `${size * 0.42}px Arial`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🍅', center, center + size * 0.03);
+
+  // Download
+  const a = document.createElement('a');
+  a.download = `icon-${size}.png`;
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+}
+
+// Auto-generate on load
+window.onload = () => {
+  drawIcon(document.getElementById('c192'));
+  setTimeout(() => drawIcon(document.getElementById('c512')), 500);
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FF6B6B">
+  <meta name="description" content="可爱的番茄钟应用，帮助你专注工作">
+  <title>番茄钟 · Tomato Clock</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/images/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/images/icon-192.png">
+
+  <!-- Google Fonts - Nunito (圆润可爱风格) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- 自定义样式 -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="header">
+      <h1>🍅 番茄钟</h1>
+      <p class="subtitle">Tomato Clock</p>
+    </header>
+
+    <!-- 计时器区域 -->
+    <section class="timer-section">
+      <div class="phase-label" id="phaseLabel">工作中</div>
+      <div class="timer-display" id="timerDisplay">25:00</div>
+      <div class="pomodoro-count" id="pomodoroCount">已完成: 0 个</div>
+
+      <div class="controls">
+        <button class="btn btn-primary" id="btnStart">开始</button>
+        <button class="btn btn-secondary" id="btnPause" disabled>暂停</button>
+        <button class="btn btn-ghost" id="btnSkip" disabled>跳过</button>
+      </div>
+
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+
+      <div class="phase-indicator" id="phaseIndicator">
+        <span class="dot active"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+    </section>
+
+    <!-- Tab 导航 -->
+    <nav class="tabs">
+      <button class="tab active" data-tab="settings">⚙️ 设置</button>
+      <button class="tab" data-tab="history">📋 历史记录</button>
+      <button class="tab" data-tab="chart">📊 统计图表</button>
+    </nav>
+
+    <!-- 内容区域 -->
+    <div class="content">
+      <!-- 设置面板 -->
+      <div class="tab-content active" id="settingsTab">
+        <div class="settings-panel">
+          <h3>时间设置</h3>
+          <div class="setting-group">
+            <label for="workDuration">工作时长（分钟）</label>
+            <input type="number" id="workDuration" min="1" max="60" value="25">
+          </div>
+          <div class="setting-group">
+            <label for="shortBreakDuration">短休息时长（分钟）</label>
+            <input type="number" id="shortBreakDuration" min="1" max="30" value="5">
+          </div>
+          <div class="setting-group">
+            <label for="longBreakDuration">长休息时长（分钟）</label>
+            <input type="number" id="longBreakDuration" min="1" max="60" value="15">
+          </div>
+          <div class="setting-group">
+            <label for="pomodorosUntilLongBreak">长休息触发数</label>
+            <input type="number" id="pomodorosUntilLongBreak" min="1" max="10" value="4">
+          </div>
+          <div class="settings-actions">
+            <button class="btn btn-primary" id="btnSaveSettings">保存设置</button>
+            <button class="btn btn-ghost" id="btnResetSettings">恢复默认</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 历史记录面板 -->
+      <div class="tab-content" id="historyTab">
+        <div class="history-panel">
+          <div class="history-header">
+            <h3>历史记录</h3>
+            <button class="btn btn-danger btn-sm" id="btnClearHistory">清除全部</button>
+          </div>
+          <div class="history-list" id="historyList">
+            <div class="empty-state">暂无记录</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 统计图表面板 -->
+      <div class="tab-content" id="chartTab">
+        <div class="chart-panel">
+          <h3>统计图表</h3>
+          <div class="chart-toggle">
+            <button class="chart-tab active" data-chart="daily">日</button>
+            <button class="chart-tab" data-chart="weekly">周</button>
+            <button class="chart-tab" data-chart="monthly">月</button>
+          </div>
+          <div class="chart-container">
+            <canvas id="statsChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast 容器 -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- 确认弹窗 -->
+    <div class="modal-overlay" id="confirmModal">
+      <div class="modal">
+        <p>确定要清除所有历史记录吗？</p>
+        <div class="modal-actions">
+          <button class="btn btn-primary" id="btnConfirmYes">确定</button>
+          <button class="btn btn-ghost" id="btnConfirmNo">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS 模块 -->
+  <script src="js/storage.js"></script>
+  <script src="js/notification.js"></script>
+  <script src="js/settings.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/history.js"></script>
+  <script src="js/chart.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
